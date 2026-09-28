@@ -3,321 +3,252 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Background Remover - Remove BG Online</title>
+<title>Free Background Remover</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}
-.container{max-width:1000px;margin:0 auto;background:#fff;border-radius:20px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-header{text-align:center;margin-bottom:40px}
-header h1{font-size:2.5em;color:#333;margin-bottom:10px}
-header p{color:#666;font-size:1.1em}
-.upload-area{border:3px dashed #667eea;border-radius:20px;padding:60px 20px;text-align:center;cursor:pointer;transition:all .3s;background:#f8f9ff;margin:30px 0}
-.upload-area:hover{border-color:#764ba2;background:#f0f2ff;transform:translateY(-5px)}
-.upload-icon{font-size:4em;margin-bottom:20px}
-.upload-area h3{color:#333;margin-bottom:10px;font-size:1.5em}
-.upload-area p{color:#666;margin-bottom:20px;font-size:14px}
-.browse-btn{padding:15px 40px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;border-radius:30px;font-size:16px;font-weight:700;cursor:pointer}
-.processing{text-align:center;padding:60px 20px;display:none}
-.processing.active{display:block}
-.spinner{border:5px solid #f3f3f3;border-top:5px solid #667eea;border-radius:50%;width:60px;height:60px;animation:spin 1s linear infinite;margin:0 auto 30px}
+body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}
+.container{max-width:900px;margin:0 auto;background:#fff;border-radius:20px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+h1{text-align:center;color:#333;margin-bottom:10px;font-size:2.5em}
+.subtitle{text-align:center;color:#666;margin-bottom:40px;font-size:1.1em}
+.upload-box{border:3px dashed #667eea;border-radius:15px;padding:60px 30px;text-align:center;background:#f8f9ff;cursor:pointer;transition:all .3s}
+.upload-box:hover{background:#e8ebff;border-color:#764ba2;transform:translateY(-5px)}
+.upload-box h2{color:#333;margin-bottom:15px;font-size:1.8em}
+.upload-box p{color:#666;margin-bottom:25px}
+.btn{display:inline-block;padding:15px 40px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:30px;font-size:16px;font-weight:bold;cursor:pointer;transition:transform .2s}
+.btn:hover{transform:scale(1.05)}
+.btn:active{transform:scale(.98)}
+#fileInput{display:none}
+.loader{display:none;text-align:center;padding:60px}
+.loader.show{display:block}
+.spinner{border:5px solid #f3f3f3;border-top:5px solid #667eea;border-radius:50%;width:60px;height:60px;animation:spin 1s linear infinite;margin:0 auto 20px}
 @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-.processing p{color:#333;font-size:1.3em;font-weight:600}
-.result{margin-top:40px;display:none}
-.result.active{display:block}
-.result h3{color:#333;text-align:center;margin-bottom:40px;font-size:2em}
-.image-comparison{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;margin-bottom:40px}
-.image-box{background:#f8f9ff;padding:25px;border-radius:15px;text-align:center;box-shadow:0 5px 20px rgba(0,0,0,.1)}
-.image-box p{font-weight:700;color:#333;margin-bottom:20px;font-size:1.2em}
-.image-box img{max-width:100%;height:auto;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.15);display:block;margin:0 auto}
-.image-box canvas{max-width:100%;height:auto;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.15);background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><rect width="10" height="10" fill="%23e0e0e0"/><rect x="10" y="10" width="10" height="10" fill="%23e0e0e0"/></svg>');display:block;margin:0 auto}
-.download-section{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:30px}
-.download-btn,.new-btn{padding:18px 50px;border:none;border-radius:30px;font-size:18px;font-weight:700;cursor:pointer;transition:all .3s}
-.download-btn{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff}
-.new-btn{background:#fff;color:#667eea;border:3px solid #667eea}
-.tips{background:#fff3cd;padding:25px;border-radius:15px;margin-top:30px;border-left:4px solid #ffc107}
-.tips h3{color:#856404;margin-bottom:15px;font-size:1.3em}
+.result{display:none;margin-top:40px}
+.result.show{display:block}
+.result h2{text-align:center;color:#333;margin-bottom:30px}
+.images{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-bottom:30px}
+.img-box{background:#f8f9ff;padding:20px;border-radius:15px;text-align:center}
+.img-box h3{color:#333;margin-bottom:15px;font-size:1.2em}
+.img-box img,.img-box canvas{max-width:100%;border-radius:10px;box-shadow:0 5px 20px rgba(0,0,0,.1)}
+.img-box canvas{background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><rect width="10" height="10" fill="%23e0e0e0"/><rect x="10" y="10" width="10" height="10" fill="%23e0e0e0"/></svg>')}
+.buttons{text-align:center;display:flex;gap:15px;justify-content:center}
+.btn-download{background:linear-gradient(135deg,#667eea,#764ba2)}
+.btn-new{background:#fff;color:#667eea;border:2px solid #667eea}
+.tips{background:#fff3cd;padding:25px;border-radius:15px;margin-top:40px;border-left:4px solid #ffc107}
+.tips h3{color:#856404;margin-bottom:15px}
 .tips ul{color:#856404;padding-left:20px}
-.tips li{margin-bottom:10px;line-height:1.6}
-.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;margin-top:50px}
-.feature{text-align:center;padding:35px 25px;background:#f8f9ff;border-radius:15px;transition:transform .3s}
-.feature .icon{font-size:3.5em;margin-bottom:20px}
-.feature h4{color:#333;margin-bottom:15px;font-size:1.3em}
-.feature p{color:#666;font-size:1em;line-height:1.5}
-footer{text-align:center;color:#fff;margin-top:50px;padding:30px}
+.tips li{margin-bottom:8px}
 @media (max-width:768px){
-.container{padding:25px}
-header h1{font-size:1.8em}
-.upload-area{padding:40px 15px}
-.image-comparison{grid-template-columns:1fr}
-.download-section{flex-direction:column}
-.download-btn,.new-btn{width:100%}
+.container{padding:20px}
+h1{font-size:2em}
+.images{grid-template-columns:1fr}
+.buttons{flex-direction:column}
+.btn{width:100%}
 }
 </style>
 </head>
 <body>
 <div class="container">
-<header>
 <h1>🎨 Background Remover</h1>
-<p>Remove image backgrounds instantly - 100% Free!</p>
-</header>
+<p class="subtitle">Remove image backgrounds instantly - 100% Free</p>
 
-<div class="upload-area" id="uploadArea">
-<div class="upload-icon">📤</div>
-<h3>Drop your image here</h3>
-<p>Works best with plain backgrounds (white, solid colors)</p>
-<input type="file" id="fileInput" accept="image/jpeg,image/png,image/jpg" hidden>
-<button class="browse-btn" onclick="document.getElementById('fileInput').click()">Browse Files</button>
+<div class="upload-box" id="uploadBox" onclick="document.getElementById('fileInput').click()">
+<h2>📤 Upload Image</h2>
+<p>Click here or drag and drop your image</p>
+<button class="btn" type="button">Choose File</button>
+<input type="file" id="fileInput" accept="image/*">
 </div>
 
-<div id="processing" class="processing">
+<div class="loader" id="loader">
 <div class="spinner"></div>
-<p>Removing background...</p>
-<p style="font-size:14px;margin-top:10px;opacity:0.7">This may take a few seconds</p>
+<p style="color:#333;font-size:1.2em;font-weight:bold">Removing background...</p>
 </div>
 
-<div id="result" class="result">
-<h3>✅ Background Removed!</h3>
-<div class="image-comparison">
-<div class="image-box">
-<p>Original Image</p>
-<img id="originalImage" alt="Original">
+<div class="result" id="result">
+<h2>✅ Background Removed!</h2>
+<div class="images">
+<div class="img-box">
+<h3>Original</h3>
+<img id="originalImg" alt="Original">
 </div>
-<div class="image-box">
-<p>Transparent Background</p>
+<div class="img-box">
+<h3>No Background</h3>
 <canvas id="resultCanvas"></canvas>
 </div>
 </div>
-<div class="download-section">
-<button class="download-btn" id="downloadBtn">📥 Download PNG</button>
-<button class="new-btn" onclick="location.reload()">🔄 Remove Another</button>
+<div class="buttons">
+<button class="btn btn-download" id="downloadBtn">📥 Download PNG</button>
+<button class="btn btn-new" onclick="location.reload()">🔄 New Image</button>
 </div>
 </div>
 
 <div class="tips">
 <h3>💡 Tips for Best Results</h3>
 <ul>
-<li><strong>Plain backgrounds work best</strong> - white walls, solid colors, green screens</li>
-<li><strong>Good lighting</strong> - ensure subject is well-lit and clear</li>
-<li><strong>High contrast</strong> - subject should be different color from background</li>
-<li><strong>Avoid shadows</strong> - shadows on background may be partially removed</li>
-<li>For professional results, use images with <strong>uniform backgrounds</strong></li>
+<li>Use images with <strong>plain backgrounds</strong> (white, solid colors)</li>
+<li>Ensure <strong>good lighting</strong> and contrast</li>
+<li>Works best with <strong>simple backgrounds</strong></li>
+<li>For professional results, use a <strong>green screen</strong></li>
 </ul>
 </div>
-
-<div class="features">
-<div class="feature">
-<div class="icon">⚡</div>
-<h4>Instant Processing</h4>
-<p>Smart algorithm removes backgrounds in seconds</p>
 </div>
-<div class="feature">
-<div class="icon">🆓</div>
-<h4>Completely Free</h4>
-<p>No hidden fees, no signup, unlimited use</p>
-</div>
-<div class="feature">
-<div class="icon">🔒</div>
-<h4>100% Private</h4>
-<p>All processing happens in your browser - images never uploaded</p>
-</div>
-</div>
-</div>
-
-<footer>
-<p>Made with ❤️ | Free Background Remover Tool</p>
-<p style="margin-top:10px;font-size:13px;opacity:0.9">Client-side processing - your privacy is protected</p>
-</footer>
 
 <script>
-const uploadArea=document.getElementById('uploadArea');
 const fileInput=document.getElementById('fileInput');
-const processing=document.getElementById('processing');
+const uploadBox=document.getElementById('uploadBox');
+const loader=document.getElementById('loader');
 const result=document.getElementById('result');
-const originalImage=document.getElementById('originalImage');
+const originalImg=document.getElementById('originalImg');
 const resultCanvas=document.getElementById('resultCanvas');
 const downloadBtn=document.getElementById('downloadBtn');
 
-uploadArea.addEventListener('click',()=>fileInput.click());
-
-uploadArea.addEventListener('dragover',(e)=>{
-e.preventDefault();
-uploadArea.style.borderColor='#764ba2';
-uploadArea.style.background='#e8ebff';
-});
-
-uploadArea.addEventListener('dragleave',()=>{
-uploadArea.style.borderColor='#667eea';
-uploadArea.style.background='#f8f9ff';
-});
-
-uploadArea.addEventListener('drop',(e)=>{
-e.preventDefault();
-uploadArea.style.borderColor='#667eea';
-uploadArea.style.background='#f8f9ff';
-const file=e.dataTransfer.files[0];
-if(file&&file.type.startsWith('image/')) handleImage(file);
-});
-
-fileInput.addEventListener('change',(e)=>{
+// File input change
+fileInput.addEventListener('change',function(e){
 const file=e.target.files[0];
-if(file) handleImage(file);
+if(file){
+processImage(file);
+}
 });
 
-function handleImage(file){
-if(file.size>10*1024*1024){
-alert('Image too large! Please use images under 10MB.');
-return;
+// Drag and drop
+uploadBox.addEventListener('dragover',function(e){
+e.preventDefault();
+e.stopPropagation();
+uploadBox.style.background='#e8ebff';
+uploadBox.style.borderColor='#764ba2';
+});
+
+uploadBox.addEventListener('dragleave',function(e){
+e.preventDefault();
+e.stopPropagation();
+uploadBox.style.background='#f8f9ff';
+uploadBox.style.borderColor='#667eea';
+});
+
+uploadBox.addEventListener('drop',function(e){
+e.preventDefault();
+e.stopPropagation();
+uploadBox.style.background='#f8f9ff';
+uploadBox.style.borderColor='#667eea';
+
+const file=e.dataTransfer.files[0];
+if(file&&file.type.startsWith('image/')){
+fileInput.files=e.dataTransfer.files;
+processImage(file);
 }
+});
+
+function processImage(file){
 const reader=new FileReader();
-reader.onload=(e)=>{
-originalImage.src=e.target.result;
-uploadArea.style.display='none';
-processing.classList.add('active');
-setTimeout(()=>removeBackground(e.target.result),1000);
+reader.onload=function(e){
+// Show original image
+originalImg.src=e.target.result;
+
+// Hide upload, show loader
+uploadBox.style.display='none';
+loader.classList.add('show');
+
+// Process after short delay
+setTimeout(function(){
+removeBackground(e.target.result);
+},500);
 };
 reader.readAsDataURL(file);
 }
 
-function removeBackground(imageSrc){
+function removeBackground(imgSrc){
 const img=new Image();
-img.onload=()=>{
+img.onload=function(){
 const canvas=resultCanvas;
-const ctx=canvas.getContext('2d',{willReadFrequently:true});
+const ctx=canvas.getContext('2d');
+
 canvas.width=img.width;
 canvas.height=img.height;
+
+// Draw image
 ctx.drawImage(img,0,0);
 
+// Get image data
 const imageData=ctx.getImageData(0,0,canvas.width,canvas.height);
 const data=imageData.data;
-const w=canvas.width;
-const h=canvas.height;
 
-// Sample background color from all 4 corners (10x10 area each)
-let bgSamples=[];
-for(let y=0;y<10;y++){
-for(let x=0;x<10;x++){
+// Sample background from corners
+const samples=[];
+const sampleSize=5;
+
+for(let y=0;y<sampleSize;y++){
+for(let x=0;x<sampleSize;x++){
 // Top-left
-let i=((y)*w+(x))*4;
-bgSamples.push([data[i],data[i+1],data[i+2]]);
+let idx=(y*canvas.width+x)*4;
+samples.push([data[idx],data[idx+1],data[idx+2]]);
+
 // Top-right
-i=((y)*w+(w-1-x))*4;
-bgSamples.push([data[i],data[i+1],data[i+2]]);
+idx=(y*canvas.width+(canvas.width-1-x))*4;
+samples.push([data[idx],data[idx+1],data[idx+2]]);
+
 // Bottom-left
-i=((h-1-y)*w+(x))*4;
-bgSamples.push([data[i],data[i+1],data[i+2]]);
+idx=((canvas.height-1-y)*canvas.width+x)*4;
+samples.push([data[idx],data[idx+1],data[idx+2]]);
+
 // Bottom-right
-i=((h-1-y)*w+(w-1-x))*4;
-bgSamples.push([data[i],data[i+1],data[i+2]]);
+idx=((canvas.height-1-y)*canvas.width+(canvas.width-1-x))*4;
+samples.push([data[idx],data[idx+1],data[idx+2]]);
 }
 }
 
-// Calculate median background color (more accurate than average)
+// Average background color
 let bgR=0,bgG=0,bgB=0;
-bgSamples.forEach(([r,g,b])=>{
-bgR+=r;
-bgG+=g;
-bgB+=b;
+samples.forEach(function(s){
+bgR+=s[0];
+bgG+=s[1];
+bgB+=s[2];
 });
-bgR=Math.round(bgR/bgSamples.length);
-bgG=Math.round(bgG/bgSamples.length);
-bgB=Math.round(bgB/bgSamples.length);
+bgR=Math.round(bgR/samples.length);
+bgG=Math.round(bgG/samples.length);
+bgB=Math.round(bgB/samples.length);
 
-// Conservative threshold - won't cut face
-const threshold=70;
+// Remove background
+const threshold=60;
 
-// Remove background with edge preservation
-for(let y=0;y<h;y++){
-for(let x=0;x<w;x++){
-const i=(y*w+x)*4;
+for(let i=0;i<data.length;i+=4){
 const r=data[i];
 const g=data[i+1];
 const b=data[i+2];
 
-// Calculate color difference
-const colorDiff=Math.sqrt(
-Math.pow(r-bgR,2)+
-Math.pow(g-bgG,2)+
-Math.pow(b-bgB,2)
+const diff=Math.sqrt(
+(r-bgR)*(r-bgR)+
+(g-bgG)*(g-bgG)+
+(b-bgB)*(b-bgB)
 );
 
-// Only remove if VERY similar to background
-if(colorDiff<threshold){
-// Check if it's an edge pixel (has nearby different colored pixels)
-let isEdge=false;
-const checkRadius=2;
-for(let dy=-checkRadius;dy<=checkRadius&&!isEdge;dy++){
-for(let dx=-checkRadius;dx<=checkRadius;dx++){
-const nx=x+dx;
-const ny=y+dy;
-if(nx>=0&&nx<w&&ny>=0&&ny<h){
-const ni=(ny*w+nx)*4;
-const nr=data[ni];
-const ng=data[ni+1];
-const nb=data[ni+2];
-const nDiff=Math.sqrt(
-Math.pow(nr-bgR,2)+
-Math.pow(ng-bgG,2)+
-Math.pow(nb-bgB,2)
-);
-if(nDiff>threshold*1.5){
-isEdge=true;
-break;
-}
-}
-}
-}
-
-if(!isEdge){
-// Not an edge, safe to make transparent
-data[i+3]=0;
-}else{
-// Edge pixel - keep semi-transparent for smooth transition
-data[i+3]=Math.round(colorDiff/threshold*255);
-}
-}
-// If colorDiff >= threshold, keep original (don't touch face/subject)
+if(diff<threshold){
+data[i+3]=0; // Make transparent
+}else if(diff<threshold*1.5){
+data[i+3]=Math.round((diff-threshold)/(threshold*0.5)*255);
 }
 }
 
 ctx.putImageData(imageData,0,0);
-processing.classList.remove('active');
-result.classList.add('active');
-showNotification('✅ Background removed successfully!');
+
+// Hide loader, show result
+loader.classList.remove('show');
+result.classList.add('show');
 };
-img.crossOrigin='anonymous';
-img.src=imageSrc;
+
+img.src=imgSrc;
 }
 
-downloadBtn.addEventListener('click',()=>{
+// Download button
+downloadBtn.addEventListener('click',function(){
 try{
-resultCanvas.toBlob((blob)=>{
-const url=URL.createObjectURL(blob);
 const link=document.createElement('a');
-link.download='background-removed-'+Date.now()+'.png';
-link.href=url;
+link.download='bg-removed-'+Date.now()+'.png';
+link.href=resultCanvas.toDataURL('image/png');
 link.click();
-URL.revokeObjectURL(url);
-showNotification('✅ Image downloaded successfully!');
-},'image/png');
+alert('✅ Downloaded successfully!');
 }catch(e){
-showNotification('❌ Download failed. Try right-click → Save Image');
+alert('❌ Download failed. Try right-click → Save Image');
 }
 });
-
-function showNotification(message){
-const n=document.createElement('div');
-n.textContent=message;
-n.style.cssText='position:fixed;top:20px;right:20px;background:'+(message.includes('❌')?'#f44336':'#4caf50')+';color:white;padding:20px 30px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.3);z-index:9999;font-weight:bold;font-size:16px;animation:slideIn 0.3s';
-document.body.appendChild(n);
-setTimeout(()=>{
-n.style.animation='slideOut 0.3s';
-setTimeout(()=>n.remove(),300);
-},3000);
-}
-
-const style=document.createElement('style');
-style.textContent='@keyframes slideIn{from{transform:translateX(400px);opacity:0}to{transform:translateX(0);opacity:1}}@keyframes slideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(400px);opacity:0}}';
-document.head.appendChild(style);
 </script>
 </body>
 </html>
